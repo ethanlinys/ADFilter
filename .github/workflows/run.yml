@@ -1,0 +1,28 @@
+name: run
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          architecture: 'x64'
+      - name: install dependencies
+        run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: build
+        run: python run.py
+      - name: commit
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email github-actions[bot]@users.noreply.github.com
+          git commit -am "automated build $(date +'%Y%m%d')"
+          git push
