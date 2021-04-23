@@ -33,4 +33,4 @@ for k in HOSTS_DICT:
                         continue
                     if "." not in domain_str:
                         continue
-                    out_f.write(f"{domain_str}\n")
+                    out_f.write(f"DOMAIN-SUFFIX,{domain_str}\n")
